@@ -13,9 +13,9 @@ public class UniFileScriptBehaviour : UniScriptBehaviour
     private static bool isScriptBundleLoaded = false;
     private static Dictionary<string, string> scripts = new Dictionary<string, string>();
 
-    public UnityEngine.Object script;
+    public TextAsset script;
     //[HideInInspector]
-    public string scriptPath;
+    // public string scriptPath;
 
     #region INTERNAL_USE_ONLY
     public static void LoadScriptBundle(TextAsset asset)
@@ -47,10 +47,10 @@ public class UniFileScriptBehaviour : UniScriptBehaviour
 
     public virtual void Awake()
     {
-        if (string.IsNullOrEmpty(scriptPath))
-            return;
-        if (registerScriptDelegate != null)
-            registerScriptDelegate.Invoke(scriptPath, this);
+        // if (string.IsNullOrEmpty(scriptPath))
+        //     return;
+        // if (registerScriptDelegate != null)
+        //     registerScriptDelegate.Invoke(scriptPath, this);
 
         ReloadScript();
     }
@@ -58,35 +58,35 @@ public class UniFileScriptBehaviour : UniScriptBehaviour
     {
         var src = "";
 
-#if UNITY_EDITOR
-        if (scripts.ContainsKey(scriptPath))
-            src = scripts[scriptPath];
-        else
-            src = File.ReadAllText(scriptPath);
-#else
-        if (isScriptBundleLoaded == false)
-            LoadScriptBundle();
-        src = scripts[scriptPath];
-#endif
+// #if UNITY_EDITOR
+//         if (scripts.ContainsKey(scriptPath))
+//             src = scripts[scriptPath];
+//         else
+//             src = File.ReadAllText(scriptPath);
+// #else
+//         if (isScriptBundleLoaded == false)
+//             LoadScriptBundle();
+//         src = scripts[scriptPath];
+// #endif
 
-        Bind(src);
+        Bind(script.text);
     }
     void OnDestroy()
     {
-        if (string.IsNullOrEmpty(scriptPath))
-            return;
-        if (unregisterScriptDelegate != null)
-            unregisterScriptDelegate.Invoke(scriptPath, this);
+        // if (string.IsNullOrEmpty(scriptPath))
+        //     return;
+        // if (unregisterScriptDelegate != null)
+        //     unregisterScriptDelegate.Invoke(scriptPath, this);
     }
 
-    private string GetResourcesRelativePath()
-    {
-        var tokens = scriptPath.Split(new string[] { "Resources/" }, 
-            2, StringSplitOptions.RemoveEmptyEntries);
-
-        if (tokens.Length == 0)
-            throw new ArgumentException("Script doest not located in Resources directory");
-
-        return tokens[1].Split('.')[0];
-    }
+    // private string GetResourcesRelativePath()
+    // {
+        // var tokens = scriptPath.Split(new string[] { "Resources/" }, 
+        //     2, StringSplitOptions.RemoveEmptyEntries);
+        //
+        // if (tokens.Length == 0)
+        //     throw new ArgumentException("Script doest not located in Resources directory");
+        //
+        // return tokens[1].Split('.')[0];
+    // }
 }

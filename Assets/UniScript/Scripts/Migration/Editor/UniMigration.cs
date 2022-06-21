@@ -124,7 +124,7 @@ namespace UniScript
                         f.GetValue(data.mono);
                 }
 
-                uniScript.scriptPath = data.csxPath;
+                // uniScript.scriptPath = data.csxPath;
 
                 DestroyImmediate(data.mono);
             }
